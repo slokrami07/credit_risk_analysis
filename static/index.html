@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CreditLens — Loan Risk Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ─── TOPBAR ───────────────────────────────────────────── -->
+<nav class="topbar">
+  <a class="logo" href="/">
+    <div class="logo-icon">◈</div>
+    CreditLens
+  </a>
+  <span class="nav-badge">AI Risk Engine v1.0</span>
+</nav>
+
+<!-- ─── MAIN ─────────────────────────────────────────────── -->
+<main class="shell">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/>
+        <path d="M7.25 4.75a.75.75 0 0 1 1.5 0v3.25h1.75a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75V4.75z"/>
+      </svg>
+      Machine Learning · XGBoost + Isotonic Calibration
+    </div>
+    <h1>Loan Default Risk<br/>Analysis</h1>
+    <p>Enter applicant details below to get an instant, model-driven credit risk
+       assessment with probability calibration.</p>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <!-- ── FORM CARD ────────────────────────────────────── -->
+    <div class="card">
+      <div class="card-title">Applicant &amp; Loan Details</div>
+
+      <form id="form" novalidate>
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="section-label">Personal Information</div>
+        <div class="fields">
+
+          <div class="field" id="f-person_age">
+            <label for="person_age">Age</label>
+            <input type="number" id="person_age" name="person_age"
+                   placeholder="e.g. 29" min="18" max="100" required />
+            <span class="hint">18 – 100 years</span>
+            <span class="field-error">Must be between 18 and 100</span>
+          </div>
+
+          <div class="field" id="f-person_income">
+            <label for="person_income">Annual Income (USD)</label>
+            <input type="number" id="person_income" name="person_income"
+                   placeholder="e.g. 55000" min="1" required />
+            <span class="hint">Gross yearly income</span>
+            <span class="field-error">Must be a positive number</span>
+          </div>
+
+          <div class="field" id="f-person_home_ownership">
+            <label for="person_home_ownership">Home Ownership</label>
+            <select id="person_home_ownership" name="person_home_ownership" required>
+              <option value="" disabled selected>Select…</option>
+              <option value="RENT">Renting</option>
+              <option value="OWN">Own outright</option>
+              <option value="MORTGAGE">Mortgage</option>
+              <option value="OTHER">Other</option>
+            </select>
+            <span class="field-error">Please select an option</span>
+          </div>
+
+          <div class="field" id="f-person_emp_length">
+            <label for="person_emp_length">Employment Length (yrs)</label>
+            <input type="number" id="person_emp_length" name="person_emp_length"
+                   placeholder="e.g. 4" min="0" max="60" step="0.5" required />
+            <span class="hint">0 – 60 years</span>
+            <span class="field-error">Must be between 0 and 60</span>
+          </div>
+
+        </div>
+
+        <!-- LOAN INFORMATION -->
+        <div class="section-label">Loan Information</div>
+        <div class="fields">
+
+          <div class="field" id="f-loan_intent">
+            <label for="loan_intent">Loan Purpose</label>
+            <select id="loan_intent" name="loan_intent" required>
+              <option value="" disabled selected>Select…</option>
+              <option value="PERSONAL">Personal</option>
+              <option value="EDUCATION">Education</option>
+              <option value="MEDICAL">Medical</option>
+              <option value="VENTURE">Venture / Business</option>
+              <option value="HOMEIMPROVEMENT">Home Improvement</option>
+              <option value="DEBTCONSOLIDATION">Debt Consolidation</option>
+            </select>
+            <span class="field-error">Please select a purpose</span>
+          </div>
+
+          <div class="field" id="f-loan_grade">
+            <label for="loan_grade">Loan Grade</label>
+            <select id="loan_grade" name="loan_grade" required>
+              <option value="" disabled selected>Select…</option>
+              <option value="A">A — Best</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="G">G — Riskiest</option>
+            </select>
+            <span class="field-error">Please select a grade</span>
+          </div>
+
+          <div class="field" id="f-loan_amnt">
+            <label for="loan_amnt">Loan Amount (USD)</label>
+            <input type="number" id="loan_amnt" name="loan_amnt"
+                   placeholder="e.g. 10000" min="1" required />
+            <span class="field-error">Must be a positive amount</span>
+          </div>
+
+          <div class="field" id="f-loan_int_rate">
+            <label for="loan_int_rate">Interest Rate (%)</label>
+            <input type="number" id="loan_int_rate" name="loan_int_rate"
+                   placeholder="e.g. 11.5" min="0" max="100" step="0.01" required />
+            <span class="hint">Range typically 5 – 23 %</span>
+            <span class="field-error">Must be between 0 and 100</span>
+          </div>
+
+          <div class="field" id="f-loan_percent_income">
+            <label for="loan_percent_income">Loan-to-Income Ratio</label>
+            <input type="number" id="loan_percent_income" name="loan_percent_income"
+                   placeholder="e.g. 0.18" min="0" max="1" step="0.01" required />
+            <span class="hint">Loan ÷ Annual Income (0.00 – 1.00)</span>
+            <span class="field-error">Must be between 0 and 1</span>
+          </div>
+
+        </div>
+
+        <!-- CREDIT HISTORY -->
+        <div class="section-label">Credit History</div>
+        <div class="fields">
+
+          <div class="field" id="f-cb_person_default_on_file">
+            <label for="cb_person_default_on_file">Prior Default on File</label>
+            <select id="cb_person_default_on_file" name="cb_person_default_on_file" required>
+              <option value="" disabled selected>Select…</option>
+              <option value="N">No — Clean history</option>
+              <option value="Y">Yes — Has defaulted before</option>
+            </select>
+            <span class="field-error">Please select an option</span>
+          </div>
+
+          <div class="field" id="f-cb_person_cred_hist_length">
+            <label for="cb_person_cred_hist_length">Credit History (yrs)</label>
+            <input type="number" id="cb_person_cred_hist_length"
+                   name="cb_person_cred_hist_length"
+                   placeholder="e.g. 5" min="0" required />
+            <span class="hint">Years of credit history on file</span>
+            <span class="field-error">Must be 0 or more</span>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn-analyze" id="submit-btn">
+          <div class="spinner" id="spinner"></div>
+          <span id="btn-label">Analyze Risk →</span>
+        </button>
+
+      </form>
+    </div><!-- /form card -->
+
+    <!-- ── RESULT PANEL ──────────────────────────────────── -->
+    <div class="result-panel">
+      <div class="card">
+        <div class="card-title">Risk Assessment</div>
+
+        <!-- Empty state -->
+        <div class="result-empty" id="result-empty">
+          <svg width="48" height="48" fill="none" viewBox="0 0 48 48">
+            <circle cx="24" cy="24" r="20" stroke="#5c5c78" stroke-width="2"/>
+            <path d="M24 16v9M24 30v2" stroke="#5c5c78" stroke-width="2.5"
+                  stroke-linecap="round"/>
+          </svg>
+          <p>Fill in the form and click<br/>
+            <strong style="color:var(--text2)">Analyze Risk</strong>
+            to see the prediction.</p>
+        </div>
+
+        <!-- Verdict (hidden until result arrives) -->
+        <div class="verdict" id="verdict">
+
+          <!-- GAUGE -->
+          <div class="gauge-wrap">
+            <svg class="gauge-svg" viewBox="0 0 200 110">
+              <defs>
+                <linearGradient id="g-low"  x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#22c55e"/>
+                  <stop offset="100%" stop-color="#86efac"/>
+                </linearGradient>
+                <linearGradient id="g-mid"  x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#fcd34d"/>
+                </linearGradient>
+                <linearGradient id="g-high" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#ef4444"/>
+                  <stop offset="100%" stop-color="#fca5a5"/>
+                </linearGradient>
+              </defs>
+              <!-- Track -->
+              <path d="M20 100 A80 80 0 0 1 180 100" fill="none"
+                    stroke="#1f1f2e" stroke-width="14" stroke-linecap="round"/>
+              <!-- Green  0–30 % -->
+              <path d="M20 100 A80 80 0 0 1 180 100" fill="none"
+                    stroke="url(#g-low)"  stroke-width="14" stroke-linecap="round"
+                    stroke-dasharray="251.2" stroke-dashoffset="175.84"/>
+              <!-- Amber 30–60 % -->
+              <path d="M20 100 A80 80 0 0 1 180 100" fill="none"
+                    stroke="url(#g-mid)"  stroke-width="14" stroke-linecap="round"
+                    stroke-dasharray="251.2" stroke-dashoffset="100.48"/>
+              <!-- Red  60–100 % -->
+              <path d="M20 100 A80 80 0 0 1 180 100" fill="none"
+                    stroke="url(#g-high)" stroke-width="14" stroke-linecap="round"
+                    stroke-dasharray="251.2" stroke-dashoffset="0"/>
+              <!-- Needle -->
+              <line id="needle" x1="100" y1="100" x2="100" y2="28"
+                    stroke="#fff" stroke-width="2.5" stroke-linecap="round"
+                    transform="rotate(0, 100, 100)"
+                    style="transition: transform 0.8s cubic-bezier(.4,0,.2,1)" />
+              <circle cx="100" cy="100" r="5" fill="#fff"/>
+            </svg>
+            <div class="gauge-label" id="gauge-pct">0%</div>
+            <div class="gauge-sub">Default Probability</div>
+          </div>
+
+          <div id="risk-chip-wrap" style="display:flex; justify-content:center"></div>
+
+          <!-- PROBABILITY BAR -->
+          <div class="prob-bar-wrap">
+            <div class="prob-bar-top">
+              <span>Default probability</span>
+              <strong id="prob-pct-txt">—</strong>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" id="bar-fill"></div>
+            </div>
+            <div class="bar-ticks">
+              <span>0%</span>
+              <span>30%</span>
+              <span>60%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- STATS -->
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Raw Probability</div>
+              <div class="stat-value" id="stat-prob">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Model Threshold</div>
+              <div class="stat-value" id="stat-threshold">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Verdict</div>
+              <div class="stat-value" id="stat-verdict">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Confidence</div>
+              <div class="stat-value" id="stat-confidence">—</div>
+            </div>
+          </div>
+
+          <!-- INSIGHT -->
+          <div class="insight-box" id="insight-box">—</div>
+
+        </div><!-- /verdict -->
+
+      </div><!-- /card -->
+    </div><!-- /result-panel -->
+
+  </div><!-- /grid -->
+
+</main>
+
+<footer>
+  CreditLens &nbsp;·&nbsp;
+  Powered by XGBoost + Isotonic Calibration &nbsp;·&nbsp;
+  For research use only
+</footer>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toast-icon"></span>
+  <span id="toast-msg"></span>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
