@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+plots_and_graphs/
+credit_risk_dataset.csv
+ml_model.py
+*.log
+.DS_Store
+
