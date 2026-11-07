@@ -10,7 +10,7 @@
 
 **A production-grade credit risk scoring system — from raw data to a live prediction API with a sleek dark-mode UI.**
 
-[Live Demo](#) · [API Docs](#api-reference) · [Model Details](#ml-pipeline)
+[🚀 Live Demo](https://credit-risk-analysis-iz4x.onrender.com) · [API Docs](https://credit-risk-analysis-iz4x.onrender.com/docs) · [Model Details](#ml-pipeline)
 
 </div>
 
@@ -277,7 +277,7 @@ git push origin main
    - Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 4. Hit **Deploy**
 
-**3. Done.** Your app goes live at `https://credit-risk-score.onrender.com`
+**3. Done.** Your app is live at → **https://credit-risk-analysis-iz4x.onrender.com**
 
 > No URL changes needed in the frontend — the JS uses relative `/predict` which works on any domain automatically.
 
